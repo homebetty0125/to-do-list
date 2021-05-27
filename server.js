@@ -1,6 +1,8 @@
 const express = require('express');
+const bodyParser = require("body-parser");
 const cors = require('cors');
 const db = require('./src/models');
+const toDoListRouter = require('./src/routes/toDoList.route');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -26,6 +28,12 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
+// parse requests of content-type - application/json
+app.use(bodyParser.json());
+
+// parse requests of content-type - application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }));
+
 db.mongoose
     .connect(db.url, {
         useNewUrlParser: true,
@@ -46,15 +54,25 @@ db.mongoose
 // simple route
 app.get('/', (req, res) => {
 
-    res.json({ message: 'Welcome to bezkoder application.' });
+    const obj = {
+        result: 1,
+        message: 'Welcome to betty\'s application.',
+        data: {},
+    };
+
+    res.json(obj);
 
 });
 
+app.use('/api', toDoListRouter);
+
 // set port, listen for requests
 // app.listen(PORT, () => console.log(`Server is running on port ${PORT}.`));
+app.listen(PORT);
 
 /**
  * [node.js + express + mongoose + React]
+ *      https://github.com/bezkoder/node-express-mongodb
  *      https://bezkoder.com/react-node-express-mongodb-mern-stack
  *      https://medium.com/swlh/how-to-create-your-first-mern-mongodb-express-js-react-js-and-node-js-stack-7e8b20463e66
  */

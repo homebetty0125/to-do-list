@@ -8,7 +8,7 @@ module.exports = (mongoose) => {
         { timestamps: true },
     );
 
-    toDoListSchema.method('toJSON', () => {
+    toDoListSchema.method('transform', () => {
 
         const { __v, _id, ...obj } = this.toObject();
         obj.id = _id;
@@ -21,3 +21,8 @@ module.exports = (mongoose) => {
     return ToDoList;
 
 };
+
+/**
+ * mongoose _id to id
+ *      https://grokonez.com/node-js/mongoose-change-_id-to-id-in-returned-response-node-js-express-application-example
+ */

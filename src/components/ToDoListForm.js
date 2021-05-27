@@ -6,7 +6,7 @@ import Service from '../lib/service';
 // css
 const useStyles = createUseStyles({
     toDoListWrap: {
-        maxWidth: '20%',
+        maxWidth: '80%',
         margin: '0 auto',
         '& h2': {
             textAlign: 'center',
@@ -60,7 +60,7 @@ const ToDoListForm = () => {
         Service.createToDoList(reqData)
             .then((res) => {
 
-                console.log('res:', res);
+                console.log('web createToDoList res:', res);
 
             });
 
