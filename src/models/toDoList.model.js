@@ -5,20 +5,12 @@ module.exports = (mongoose) => {
             title: String,
             description: String,
         },
-        { timestamps: true },
+        {
+            timestamps: true, // createdAt, updatedAt
+        },
     );
 
-    toDoListSchema.method('transform', () => {
-
-        const { __v, _id, ...obj } = this.toObject();
-        obj.id = _id;
-        return obj;
-
-    });
-
-    const ToDoList = mongoose.model('toDoList', toDoListSchema);
-
-    return ToDoList;
+    return mongoose.model('toDoList', toDoListSchema);
 
 };
 

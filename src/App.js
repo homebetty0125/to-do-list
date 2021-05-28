@@ -1,4 +1,5 @@
 import { createUseStyles } from 'react-jss';
+import ToDoList from './components/ToDoList';
 import ToDoListForm from './components/ToDoListForm';
 
 // css
@@ -17,9 +18,8 @@ const App = () => {
     return (
 
         <section className={classes.main}>
-
             <ToDoListForm />
-
+            <ToDoList />
         </section>
 
     );

@@ -28,14 +28,15 @@ const COMMON = {
                 }
 
                 return {
-                    url: `/${url}`,
+                    url: process.env.REACT_APP_API ? `//${process.env.REACT_APP_API}/api${url}` : `/api${url}`,
                     method,
                 };
 
             },
             showErrorMesg = (message, callback) => {
 
-                alert(message || '出了些狀況，請找研發');
+                console.log(message || '出了些狀況，請找研發');
+                // alert(message || '出了些狀況，請找研發');
 
             };
 
@@ -47,20 +48,16 @@ const COMMON = {
                     // result: 1
                     ({ data }) => {
 
+                        // console.log('data:', data)
+
                         // localhost 才有此情境
-                        if (!data.result && (process.env.NODE_ENV !== 'production')) {
+                        // if (!data.result && (process.env.NODE_ENV !== 'production')) {
 
-                            reject(
-                                showErrorMesg('請先登入', () => {
+                        //     reject(showErrorMesg('請先登入'));
 
-                                    window.location = '/';
+                        // }
 
-                                })
-                            );
-
-                        }
-
-                        resolve(data.data);
+                        resolve(data);
 
                     },
                     // result: 0

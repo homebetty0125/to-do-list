@@ -55,12 +55,10 @@ const ToDoListForm = () => {
     // 送資料
     const handleReqData = (reqData) => {
 
-        // console.log('reqData:', reqData);
-
         Service.createToDoList(reqData)
             .then((res) => {
 
-                console.log('web createToDoList res:', res);
+                console.log('res:', res);
 
             });
 

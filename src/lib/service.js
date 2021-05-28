@@ -1,8 +1,8 @@
 import COMMON from './index';
 
 const Service = {
-    getToDoList: (reqData) => COMMON.serviceProxy('/', reqData),
-    createToDoList: (reqData) => COMMON.serviceProxy('/', reqData),
+    getToDoList: (reqData) => COMMON.serviceProxy('/list', reqData),
+    createToDoList: (reqData) => COMMON.serviceProxy('/createToDoList', reqData),
 };
 
 export default Service;

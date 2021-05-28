@@ -1,34 +1,60 @@
 const db = require('../models');
 const ToDoList = db.toDoLists;
 
-const response = {
-    result: 1,
-    message: '',
-    data: {},
+// 整理回傳格式
+const resCallback = (res, type) => {
+
+    let data = {};
+
+    switch (type) {
+        case 'list':
+            data = {
+                list: res.map((d) => {
+
+                    const { _id, __v, createdAt, updatedAt, ...o } = d._doc;
+                    o.id = _id;
+                    return o;
+
+                }),
+            };
+            return data;
+
+        case 'remove':
+            data = {};
+            return data;
+
+        default:
+            const { _id, __v, createdAt, updatedAt, ...obj } = res;
+
+            data = {
+                ...obj,
+                id: _id,
+            };
+            break;
+    }
+
+    return {
+        result: 1,
+        message: '',
+        data,
+    };
+
+};
+
+// 列表
+const findAll = (req, res) => {
+
+    ToDoList.find()
+        .then((data) => res.send(resCallback(data, 'list')));
+
 };
 
 // 新增
-const create = ({ body }, res) => {
+const create = async ({ body }, res) => {
 
-    // console.log('req:', req);
-    // console.log('res:', res);
+    await ToDoList.create(body, (err, docs) => {
 
-    // if (!req.body.title) {
-
-    //     res.status(400).send({ message: 'Content can not be empty!' });
-    //     return;
-
-    // }
-
-    ToDoList.create(body, (err, docs) => {
-
-        console.log('docs:', docs);
-        res.json({
-            ...response,
-            // data: {
-            //     id: 111111111,
-            // },
-        });
+        res.send(resCallback(docs._doc));
 
     });
 
@@ -41,6 +67,7 @@ const create = ({ body }, res) => {
 // };
 
 module.exports = {
+    findAll,
     create,
     // update,
     // remove,
