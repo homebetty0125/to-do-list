@@ -5,6 +5,8 @@ const router = express.Router();
 // toDoList CRUD
 router.post('/list', ToDoList.findAll);
 router.post('/createToDoList', ToDoList.create);
+router.post('/updateToDoList', ToDoList.update);
+router.post('/removeToDoList', ToDoList.remove);
 
 module.exports = router;
 

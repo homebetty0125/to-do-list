@@ -8,20 +8,18 @@ const resCallback = (res, type) => {
 
     switch (type) {
         case 'list':
-            data = {
-                list: res.map((d) => {
+            data.list = res.map((d) => {
 
-                    const { _id, __v, createdAt, updatedAt, ...o } = d._doc;
-                    o.id = _id;
-                    return o;
+                const { _id, __v, createdAt, updatedAt, ...o } = d._doc;
+                o.id = _id;
+                return o;
 
-                }),
-            };
-            return data;
+            });
+            break;
 
         case 'remove':
             data = {};
-            return data;
+            break;
 
         default:
             const { _id, __v, createdAt, updatedAt, ...obj } = res;
@@ -60,17 +58,27 @@ const create = async ({ body }, res) => {
 
 };
 
-// const update = async (res, req) => {
+// 編輯
+const update = async ({ body }, res) => {
 
-//     return await Users.find(resCallback({ req, type: 'list' }));
+    const resData = await ToDoList.findByIdAndUpdate(body.id, body);
+    res.send(resCallback(resData._doc));
 
-// };
+};
+
+// 刪除
+const remove = async ({ body }, res) => {
+
+    const resData = await ToDoList.findByIdAndRemove(body.id);
+    res.send(resCallback(resData._doc, 'remove'));
+
+};
 
 module.exports = {
     findAll,
     create,
-    // update,
-    // remove,
+    update,
+    remove,
     // removeAll,
     // findAll,
     // findOne,

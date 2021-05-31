@@ -28,7 +28,7 @@ const COMMON = {
                 }
 
                 return {
-                    url: process.env.REACT_APP_API ? `//${process.env.REACT_APP_API}/api${url}` : `/api${url}`,
+                    url: `/api${url}`,
                     method,
                 };
 
@@ -36,7 +36,6 @@ const COMMON = {
             showErrorMesg = (message, callback) => {
 
                 console.log(message || '出了些狀況，請找研發');
-                // alert(message || '出了些狀況，請找研發');
 
             };
 
@@ -48,8 +47,6 @@ const COMMON = {
                     // result: 1
                     ({ data }) => {
 
-                        // console.log('data:', data)
-
                         // localhost 才有此情境
                         // if (!data.result && (process.env.NODE_ENV !== 'production')) {
 
@@ -57,7 +54,7 @@ const COMMON = {
 
                         // }
 
-                        resolve(data);
+                        resolve(data.data);
 
                     },
                     // result: 0

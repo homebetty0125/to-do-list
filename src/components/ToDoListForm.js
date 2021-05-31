@@ -1,7 +1,8 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useContext, useState } from 'react';
 import { createUseStyles } from 'react-jss';
 import { useForm } from 'react-hook-form';
-import Service from '../lib/service';
+import { ErrorMessage } from '@hookform/error-message';
+import { ToDoListContext } from '../context/toDoList.state';
 
 // css
 const useStyles = createUseStyles({
@@ -43,6 +44,17 @@ const useStyles = createUseStyles({
 
 const ToDoListForm = () => {
 
+    // Context
+    const {
+        createToDoList,
+        updateToDoList,
+        dispatch,
+        formStorage,
+    } = useContext(ToDoListContext);
+
+    // State
+    const [storage, setStorage] = useState({ ...formStorage });
+
     const classes = useStyles();
 
     //
@@ -50,17 +62,40 @@ const ToDoListForm = () => {
         handleSubmit,
         register,
         formState: { errors },
+        reset,
     } = useForm();
+
+    //
+    // const handleChange = () => {
+
+    //     setStorage();
+
+    // };
 
     // 送資料
     const handleReqData = (reqData) => {
 
-        Service.createToDoList(reqData)
-            .then((res) => {
+        reqData = {
+            ...formStorage,
+            ...reqData,
+        };
 
-                console.log('res:', res);
+        console.log('reqData:', reqData);
 
-            });
+        return;
+        if (reqData.id) updateToDoList(reqData).then(handleCancel);
+        else createToDoList(reqData).then(handleReset);
+
+    };
+
+    // 清除
+    const handleReset = () => reset();
+
+    // 取消
+    const handleCancel = () => {
+
+        handleReset();
+        dispatch({ type: 'FORM', payload: {} });
 
     };
 
@@ -68,6 +103,8 @@ const ToDoListForm = () => {
 
         <div className={classes.toDoListWrap}>
             <h2>Please enter the name.</h2>
+
+            <p>{formStorage.id && `ID: ${formStorage.id}`}</p>
 
             <form
                 className={classes.form}
@@ -77,21 +114,24 @@ const ToDoListForm = () => {
                     Title:
                     <input
                         type="text"
-                        { ...register('title') }
+                        defaultValue={formStorage.title}
+                        { ...register('title', { required: 'This is required.' }) }
                     />
+                    <ErrorMessage errors={errors} name="title" />
                 </div>
 
                 <div className="row">
                     Descriiption:
                     <input
                         type="text"
+                        defaultValue={formStorage.description}
                         { ...register('description') }
                     />
                 </div>
 
                 <div className={classes.formActions}>
                     <button type="submit">確定</button>
-                    <button type="reset">取消</button>
+                    <button type="reset" onClick={handleCancel}>取消</button>
                 </div>
             </form>
         </div>

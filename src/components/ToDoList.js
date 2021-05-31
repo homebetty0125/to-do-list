@@ -1,12 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { createUseStyles } from 'react-jss';
-import Service from '../lib/service';
+import { ToDoListContext } from '../context/toDoList.state';
 
 // css
 const useStyles = createUseStyles({
-    toDoListWrap: {
-        // padding: '40px',
-    },
     row: {
         border: '1px solid gray',
         marginBottom: '20px',
@@ -15,37 +12,85 @@ const useStyles = createUseStyles({
             margin: '0 0 8px 0',
         }
     },
+    actions: {
+        '& button': {
+            fontSize: '16px',
+            color: '#FFF',
+            backgroundColor: 'red',
+            border: 0,
+            padding: '4px 12px',
+            cursor: 'pointer',
+        },
+        '& .btn-update': {
+            backgroundColor: 'blue',
+            marginRight: '10px',
+        },
+    },
 });
 
+//
 const ToDoList = () => {
+
+    // Context
+    const {
+        list,
+        getList,
+        updateToDoList,
+        removeToDoList,
+        dispatch,
+    } = useContext(ToDoListContext);
 
     const classes = useStyles();
 
-    // State
-    const [list, setList] = useState([]);
-
     useEffect(() => {
 
-        Service.getToDoList()
-            .then(({ list }) => setList(list));
+        getList();
 
     }, []);
+
+    // 編輯
+    const btnUpdate = (reqData) => {
+
+        dispatch({ type: 'FORM', payload: reqData });
+
+    };
+
+    // 刪除
+    const btnDelete = (id) => {
+
+        const yes = window.confirm(`確定要刪除${id}？`);
+        if (yes) removeToDoList({ id });
+
+    };
 
     return (
 
         <div className={classes.toDoListWrap}>
             {
-                list.map(({ id, title, description }) => (
+                list.length ? (
 
-                    <div
-                        key={id}
-                        className={classes.row}
-                    >
-                        <h3>{title}</h3>
-                        <div>{description}</div>
-                    </div>
+                    list.map(({ id, title, description }) => (
 
-                ))
+                        <div
+                            key={id}
+                            className={classes.row}
+                        >
+                            <h3>{title}{`(${id})`}</h3>
+                            <p>{description}</p>
+                            <div className={classes.actions}>
+                                <button
+                                    className="btn-update"
+                                    onClick={() => btnUpdate({ id, title, description })}
+                                >
+                                    編輯
+                                </button>
+                                <button onClick={() => btnDelete(id)}>刪除</button>
+                            </div>
+                        </div>
+
+                    ))
+
+                ) : <p>目前沒有資料...</p>
             }
         </div>
 

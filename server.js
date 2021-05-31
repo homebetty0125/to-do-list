@@ -35,6 +35,7 @@ db.mongoose
     .connect(db.url, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
+        useFindAndModify: false,
     })
     .then(() => {
 

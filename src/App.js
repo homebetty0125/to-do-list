@@ -1,4 +1,5 @@
 import { createUseStyles } from 'react-jss';
+import { ToDoListProvider } from './context/toDoList.state';
 import ToDoList from './components/ToDoList';
 import ToDoListForm from './components/ToDoListForm';
 
@@ -11,16 +12,19 @@ const useStyles = createUseStyles({
     },
 });
 
+//
 const App = () => {
 
     const classes = useStyles();
 
     return (
 
-        <section className={classes.main}>
-            <ToDoListForm />
-            <ToDoList />
-        </section>
+        <ToDoListProvider>
+            <section className={classes.main}>
+                <ToDoListForm />
+                <ToDoList />
+            </section>
+        </ToDoListProvider>
 
     );
 
