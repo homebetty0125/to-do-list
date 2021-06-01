@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { createUseStyles } from 'react-jss';
 import { useForm } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
@@ -52,9 +52,6 @@ const ToDoListForm = () => {
         formStorage,
     } = useContext(ToDoListContext);
 
-    // State
-    const [storage, setStorage] = useState({ ...formStorage });
-
     const classes = useStyles();
 
     //
@@ -65,13 +62,6 @@ const ToDoListForm = () => {
         reset,
     } = useForm();
 
-    //
-    // const handleChange = () => {
-
-    //     setStorage();
-
-    // };
-
     // 送資料
     const handleReqData = (reqData) => {
 
@@ -80,9 +70,6 @@ const ToDoListForm = () => {
             ...reqData,
         };
 
-        console.log('reqData:', reqData);
-
-        return;
         if (reqData.id) updateToDoList(reqData).then(handleCancel);
         else createToDoList(reqData).then(handleReset);
 

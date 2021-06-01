@@ -1,6 +1,6 @@
 const toDoListReducer = (state, { type, payload }) => {
 
-    console.log('reducer payload:', payload)
+    // console.log('reducer payload:', payload)
 
     switch (type) {
         case 'LIST':

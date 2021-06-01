@@ -26,7 +26,7 @@ const resCallback = (res, type) => {
 
             data = {
                 ...obj,
-                id: _id,
+                id: _id ? _id : res.id,
             };
             break;
     }
@@ -61,8 +61,8 @@ const create = async ({ body }, res) => {
 // 編輯
 const update = async ({ body }, res) => {
 
-    const resData = await ToDoList.findByIdAndUpdate(body.id, body);
-    res.send(resCallback(resData._doc));
+    await ToDoList.findByIdAndUpdate(body.id, body);
+    res.send(resCallback(body));
 
 };
 
